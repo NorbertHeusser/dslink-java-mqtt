@@ -98,7 +98,7 @@ public class Main extends DSLinkHandler {
         final Node node = manager.getNode(split[0]).getNode();
         final Mqtt mqtt = node.getMetaData();
         String topic = path.substring(node.getPath().length() + 6);
-        mqtt.publish(topic, value.toString(), false);
+        mqtt.publish(topic, value, false);
     }
 
     public static void main(String[] args) {

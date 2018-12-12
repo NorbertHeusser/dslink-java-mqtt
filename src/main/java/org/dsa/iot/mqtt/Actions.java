@@ -280,18 +280,17 @@ public class Actions {
             @Override
             public void handle(ActionResult event) {
                 Value vTopic = event.getParameter("topic", ValueType.STRING);
-                Value vValue = event.getParameter("value", ValueType.STRING);
+                Value vValue = event.getParameter("value");
                 Value vRetained = event.getParameter("retained", ValueType.BOOL);
 
                 String topic = vTopic.getString();
-                String value = vValue.getString();
                 boolean retained = vRetained.getBool();
 
-                mqtt.publish(topic, value, retained);
+                mqtt.publish(topic, vValue, retained);
             }
         });
         a.addParameter(new Parameter("topic", ValueType.STRING));
-        a.addParameter(new Parameter("value", ValueType.STRING));
+        a.addParameter(new Parameter("value", ValueType.DYNAMIC));
         a.addParameter(new Parameter("retained", ValueType.BOOL));
         return a;
     }

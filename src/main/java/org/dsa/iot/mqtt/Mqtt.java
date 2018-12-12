@@ -250,10 +250,17 @@ public class Mqtt implements MqttCallback {
     }
 
     public void publish(final String topic,
-                        String value,
+                        Value value,
                         boolean retained) {
         try {
-            byte[] payload = value.getBytes("UTF-8");
+            byte[] payload;
+	    if ( value.getType() == ValueType.BINARY ) {
+		payload = value.getBinary();
+		System.out.println("Publish binary to topic: " + topic+ " of size "+ value.getBinary().length);
+	    } else {
+		payload = value.getString().getBytes("UTF-8");
+		System.out.println("Publish to topic: " + topic+ " : "+ value);
+	    }
             final MqttMessage msg = new MqttMessage();
             msg.setPayload(payload);
             msg.setQos(getQos());
@@ -362,14 +369,14 @@ public class Mqtt implements MqttCallback {
         b.setValueType(ValueType.STRING);
         Node node = b.build();
         // Extra assurance in case a parent never had its type set
-        node.setValueType(ValueType.STRING);
-        node.setValue(new Value(msg.toString()));
+        node.setValueType(ValueType.BINARY);
+        node.setValue(new Value(msg.getPayload()));
         node.setWritable(Writable.WRITE);
         node.getListener().setValueHandler(new Handler<ValuePair>() {
             @Override
             public void handle(ValuePair event) {
                 event.setReject(true);
-                publish(s, event.getCurrent().toString(), false);
+                publish(s, event.getCurrent(), false);
             }
         });
         if (LOGGER.isTraceEnabled()) {
