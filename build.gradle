@@ -4,10 +4,11 @@ apply plugin: 'java-library'
 mainClassName = 'org.dsa.iot.mqtt.Main'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-version = '0.0.2'
+version = '0.0.2-No-Client-Identifier-Length-Check'
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
@@ -17,8 +18,8 @@ repositories {
 }
  
 dependencies {
-    implementation 'org.iot-dsa:dslink:0.20.1'
-    implementation 'org.iot-dsa:commons:0.20.1'
+    implementation 'org.iot-dsa:dslink:0.20.1-No-Client-Identifier-Length-Check'
+    implementation 'org.iot-dsa:commons:0.20.1-No-Client-Identifier-Length-Check'
     implementation 'org.bouncycastle:bcpkix-jdk15on:1.60'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     implementation ('io.moquette:moquette-broker:0.11') {
@@ -29,6 +30,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 }
+
 
 run {
     args System.getProperty("exec.args", "").split()
