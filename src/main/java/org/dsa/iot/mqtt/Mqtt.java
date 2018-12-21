@@ -254,13 +254,13 @@ public class Mqtt implements MqttCallback {
                         boolean retained) {
         try {
             byte[] payload;
-	    if ( value.getType() == ValueType.BINARY ) {
-		payload = value.getBinary();
-		System.out.println("Publish binary to topic: " + topic+ " of size "+ value.getBinary().length);
-	    } else {
-		payload = value.getString().getBytes("UTF-8");
-		System.out.println("Publish to topic: " + topic+ " : "+ value);
-	    }
+            if ( value.getType() == ValueType.BINARY ) {
+		        payload = value.getBinary();
+		        LOGGER.info("Publish binary to topic '{}': size {}", topic, value.getBinary().length );
+	        } else {
+                payload = value.getString().getBytes("UTF-8");
+                LOGGER.info("Publish string to topic '{}': '{}'", topic, value);
+	        }
             final MqttMessage msg = new MqttMessage();
             msg.setPayload(payload);
             msg.setQos(getQos());
